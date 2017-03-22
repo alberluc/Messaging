@@ -1,4 +1,4 @@
-package lucien.albert.myapplication;
+package lucien.albert.myapplication.network;
 
 /**
  * Created by alberluc on 20/01/2017.

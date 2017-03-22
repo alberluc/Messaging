@@ -1,14 +1,16 @@
-package lucien.albert.myapplication;
+package lucien.albert.myapplication.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import lucien.albert.myapplication.model.Channel;
+import lucien.albert.myapplication.R;
 
 /**
  * Created by alberluc on 27/01/2017.
@@ -30,8 +32,8 @@ public class ChannelsAdapter extends ArrayAdapter<Channel> {
         View rowView = inflater.inflate(R.layout.activity_row_channel, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.titleChannel);
         TextView txtNbUser = (TextView) rowView.findViewById(R.id.nbUser);
-        textView.setText(values.get(position).name);
-        txtNbUser.setText("Nombre d'utilisateurs connectés : " + values.get(position).connectedusers);
+        textView.setText(values.get(position).getName());
+        txtNbUser.setText("Nombre d'utilisateurs connectés : " + values.get(position).getConnectedusers());
         return rowView;
     }
 

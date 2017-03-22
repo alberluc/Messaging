@@ -1,14 +1,13 @@
-package lucien.albert.myapplication;
+package lucien.albert.myapplication.fragments;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.Handler;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -16,13 +15,21 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
-public class ChannelMessageActivity extends AppCompatActivity implements OnDownloadCompleteListener, View.OnClickListener {
+import lucien.albert.myapplication.AppConfig;
+import lucien.albert.myapplication.R;
+import lucien.albert.myapplication.adapter.MessageAdapter;
+import lucien.albert.myapplication.model.Messages;
+import lucien.albert.myapplication.model.Result;
+import lucien.albert.myapplication.network.Downloader;
+import lucien.albert.myapplication.network.OnDownloadCompleteListener;
 
-    public static final String PREFS_NAME = "Stockage";
-    private static final int PICTURE_REQUEST_CODE = 9;
+/**
+ * Created by alberluc on 22/03/2017.
+ */
+public class MessageListFragment extends Fragment implements OnDownloadCompleteListener, View.OnClickListener {
+
     private String channelID;
     private String accesstoken;
     private Messages messages;
@@ -30,19 +37,18 @@ public class ChannelMessageActivity extends AppCompatActivity implements OnDownl
     private EditText txtMessage;
     private Button btnEnvoyer;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_channel_message);
-        //getIntent().getStringExtra()
+        View v = inflater.inflate(R.layout.fragment_message_list,container);
 
-        lVMessage = (ListView) findViewById(R.id.lVMessage);
-        txtMessage = (EditText) findViewById(R.id.txtMessage);
-        btnEnvoyer = (Button) findViewById(R.id.btnEnvoyer);
+        lVMessage = (ListView) v.findViewById(R.id.lVMessage);
+        txtMessage = (EditText) v.findViewById(R.id.txtMessage);
+        btnEnvoyer = (Button) v.findViewById(R.id.btnEnvoyer);
         btnEnvoyer.setOnClickListener((View.OnClickListener) this);
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences settings = getActivity().getSharedPreferences(AppConfig.PREFS_NAME, 0);
         channelID = settings.getString("channelID", "");
         accesstoken = settings.getString("accesstoken", "");
 
@@ -61,21 +67,28 @@ public class ChannelMessageActivity extends AppCompatActivity implements OnDownl
 
         handler.postDelayed(r, 1000);
 
+        return v;
+    }
+
+    public void getMessage(HashMap<String, String> Params){
+        Downloader d = new Downloader(getActivity(), "http://www.raphaelbischof.fr/messaging/?function=getmessages" ,Params);
+        d.setDownloaderList(this);
+        d.execute();
     }
 
     @Override
-    public void onDownloadCompleted(String result, int type) {
+    public void onDownloadCompleted(String content, int type) {
 
         if(type==0){
 
             Gson gson = new Gson();
-            messages = gson.fromJson(result, Messages.class);
+            messages = gson.fromJson(content, Messages.class);
             int index = lVMessage.getFirstVisiblePosition();
 
             View v = lVMessage.getChildAt(0);
             int top = (v == null) ? 0 : (v.getTop() - lVMessage.getPaddingTop());
 
-            lVMessage.setAdapter(new MessageAdapter(getApplicationContext(), messages.messages));
+            lVMessage.setAdapter(new MessageAdapter(getActivity().getApplicationContext(), messages.getMessages()));
 
             lVMessage.setSelectionFromTop(index, top);
 
@@ -84,22 +97,24 @@ public class ChannelMessageActivity extends AppCompatActivity implements OnDownl
         else if(type==1){
 
             Gson gson = new Gson();
-            Result r = gson.fromJson(result, Result.class);
+            Result r = gson.fromJson(content, Result.class);
 
-            if(r.code==200){
+            if(r.getCode()==200){
 
-                Toast.makeText(this, "Message envoyé !" ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Message envoyé !" ,Toast.LENGTH_SHORT).show();
 
             }
             else{
 
-                Toast.makeText(this, "Erreur !" ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Erreur !" ,Toast.LENGTH_SHORT).show();
 
             }
 
         }
 
     }
+
+
 
     @Override
     public void onClick(View view) {
@@ -108,7 +123,7 @@ public class ChannelMessageActivity extends AppCompatActivity implements OnDownl
 
             if(txtMessage.getText().toString() != ""){
 
-                SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                SharedPreferences settings = getActivity().getSharedPreferences(AppConfig.PREFS_NAME, 0);
                 String username = settings.getString("username", "");
 
                 HashMap<String, String> Params = new HashMap<>();
@@ -117,7 +132,7 @@ public class ChannelMessageActivity extends AppCompatActivity implements OnDownl
                 Params.put("message", txtMessage.getText().toString());
                 Params.put("username", username);
 
-                Downloader d = new Downloader(this, "http://www.raphaelbischof.fr/messaging/?function=sendmessage" ,Params, 1);
+                Downloader d = new Downloader(getActivity(), "http://www.raphaelbischof.fr/messaging/?function=sendmessage" ,Params, 1);
                 d.setDownloaderList(this);
                 d.execute();
 
@@ -136,9 +151,4 @@ public class ChannelMessageActivity extends AppCompatActivity implements OnDownl
 
     }
 
-    public void getMessage(HashMap<String, String> Params){
-        Downloader d = new Downloader(this, "http://www.raphaelbischof.fr/messaging/?function=getmessages" ,Params);
-        d.setDownloaderList(this);
-        d.execute();
-    }
 }

@@ -1,4 +1,4 @@
-package lucien.albert.myapplication;
+package lucien.albert.myapplication.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,11 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import lucien.albert.myapplication.model.Message;
+import lucien.albert.myapplication.network.OnDownloadCompleteListener;
+import lucien.albert.myapplication.R;
 
 /**
  * Created by alberluc on 27/01/2017.
@@ -42,15 +45,15 @@ public class MessageAdapter extends ArrayAdapter<Message> implements OnDownloadC
         rowView = inflater.inflate(R.layout.activity_row_message, parent, false);
 
         TextView txtMsg = (TextView) rowView.findViewById(R.id.txtMessage);
-        txtMsg.setText(values.get(position).message);
+        txtMsg.setText(values.get(position).getMessage());
 
         TextView txtUser = (TextView) rowView.findViewById(R.id.txtUser);
-        txtUser.setText(values.get(position).username + " : ");
+        txtUser.setText(values.get(position).getUsername() + " : ");
 
         TextView txtDate = (TextView) rowView.findViewById(R.id.txtDate);
-        txtDate.setText(values.get(position).date);
+        txtDate.setText(values.get(position).getDate());
 
-        url = values.get(position).imageUrl;
+        url = values.get(position).getImageUrl();
         final ImageView imgUser = (ImageView) rowView.findViewById(R.id.imgUser);
 
         //J'ai préféré la facilité ! :)

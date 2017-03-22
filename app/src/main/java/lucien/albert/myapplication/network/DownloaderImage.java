@@ -1,28 +1,17 @@
-package lucien.albert.myapplication;
+package lucien.albert.myapplication.network;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import javax.net.ssl.HttpsURLConnection;
+import lucien.albert.myapplication.adapter.MessageAdapter;
 
 /**
  * Created by alberluc on 30/01/2017.

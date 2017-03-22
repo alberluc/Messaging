@@ -1,4 +1,4 @@
-package lucien.albert.myapplication;
+package lucien.albert.myapplication.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +12,11 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
+
+import lucien.albert.myapplication.network.Downloader;
+import lucien.albert.myapplication.network.OnDownloadCompleteListener;
+import lucien.albert.myapplication.R;
+import lucien.albert.myapplication.model.Result;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, OnDownloadCompleteListener {
 
@@ -58,11 +63,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         Result r = gson.fromJson(result, Result.class);
 
-        if(r.code == 200){
+        if(r.getCode() == 200){
 
             Toast.makeText(this, "Vous etes connecté !" ,Toast.LENGTH_SHORT).show();
 
-            save("accesstoken", r.accesstoken);
+            save("accesstoken", r.getAccesstoken());
 
             Intent newActivity = new Intent(getApplicationContext(),ChannelListActivity.class);
             startActivity(newActivity);
