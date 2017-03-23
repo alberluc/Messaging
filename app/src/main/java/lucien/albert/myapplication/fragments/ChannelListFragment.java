@@ -25,11 +25,16 @@ import lucien.albert.myapplication.R;
  */
 public class ChannelListFragment extends Fragment implements  OnDownloadCompleteListener {
 
-    private ListView lVChannels;
+    public ListView lVChannels;
     private String accesstoken;
     private Channels chs;
 
     public static final String PREFS_NAME = "Stockage";
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Nullable
     @Override

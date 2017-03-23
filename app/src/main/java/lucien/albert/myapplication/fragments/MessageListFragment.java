@@ -151,4 +151,9 @@ public class MessageListFragment extends Fragment implements OnDownloadCompleteL
 
     }
 
+    public void changeChannelId(String id)
+    {
+        channelID = id;
+    }
+
 }

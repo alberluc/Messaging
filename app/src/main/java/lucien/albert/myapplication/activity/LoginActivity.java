@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 
+import lucien.albert.myapplication.AppConfig;
 import lucien.albert.myapplication.network.Downloader;
 import lucien.albert.myapplication.network.OnDownloadCompleteListener;
 import lucien.albert.myapplication.R;
@@ -23,8 +24,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button btnValider;
     private EditText txtId;
     private EditText txtPwd;
-
-    public static final String PREFS_NAME = "Stockage";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void save(String key, String value){
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences settings = getSharedPreferences(AppConfig.PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(key, value);
         editor.commit();

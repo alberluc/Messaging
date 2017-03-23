@@ -5,11 +5,11 @@ package lucien.albert.myapplication.model;
  */
 public class Channel {
 
-    private int channelID;
+    private String channelID;
     private String name;
     private int connectedusers;
 
-    public int getChannelID() {
+    public String getChannelID() {
         return channelID;
     }
 
