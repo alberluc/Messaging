@@ -28,7 +28,6 @@ public class ChannelMessageActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_channel_message);
-        //getIntent().getStringExtra()
 
     }
 

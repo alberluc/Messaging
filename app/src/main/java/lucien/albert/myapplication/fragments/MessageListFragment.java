@@ -36,6 +36,7 @@ public class MessageListFragment extends Fragment implements OnDownloadCompleteL
     private ListView lVMessage;
     private EditText txtMessage;
     private Button btnEnvoyer;
+    private HashMap<String, String> Params;
 
     @Nullable
     @Override
@@ -52,7 +53,7 @@ public class MessageListFragment extends Fragment implements OnDownloadCompleteL
         channelID = settings.getString("channelID", "");
         accesstoken = settings.getString("accesstoken", "");
 
-        final HashMap<String, String> Params = new HashMap<>();
+        Params = new HashMap<>();
         Params.put("accesstoken", accesstoken);
         Params.put("channelid", channelID);
 
@@ -153,7 +154,9 @@ public class MessageListFragment extends Fragment implements OnDownloadCompleteL
 
     public void changeChannelId(String id)
     {
-        channelID = id;
+        Params = new HashMap<>();
+        Params.put("accesstoken", accesstoken);
+        Params.put("channelid", id);
     }
 
 }

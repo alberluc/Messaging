@@ -20,6 +20,7 @@ public class ChannelListActivity extends AppCompatActivity implements AdapterVie
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -27,13 +28,12 @@ public class ChannelListActivity extends AppCompatActivity implements AdapterVie
         } else {
             setContentView(R.layout.activity_channel_list_landscape);
         }
-
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        ChannelListFragment frag_channel = (ChannelListFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_channel);
+        ChannelListFragment frag_channel = (ChannelListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_channel);
         MessageListFragment frag_message = (MessageListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_message);
 
         Channel myChannel = (Channel) frag_channel.lVChannels.getItemAtPosition(position);

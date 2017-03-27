@@ -62,13 +62,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         Result r = gson.fromJson(result, Result.class);
 
-        if(r.getCode() == 200){
 
-            Toast.makeText(this, "Vous etes connecté !" ,Toast.LENGTH_SHORT).show();
+        if(r == null){
+
+            Toast.makeText(this, "Vérifiez votre connexion !" ,Toast.LENGTH_SHORT).show();
+
+        }
+        else if(r.getCode() == 200) {
+
+            Toast.makeText(this, "Vous etes connecté !", Toast.LENGTH_SHORT).show();
 
             save("accesstoken", r.getAccesstoken());
 
-            Intent newActivity = new Intent(getApplicationContext(),ChannelListActivity.class);
+            Intent newActivity = new Intent(getApplicationContext(), ChannelListActivity.class);
             startActivity(newActivity);
 
         }
